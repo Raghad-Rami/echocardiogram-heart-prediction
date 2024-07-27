@@ -1,6 +1,6 @@
-def print_hi():
+def print_greeting():
     print('Hello World')
 
 
 if __name__ == '__main__':
-    print_hi()
+    print_greeting()
