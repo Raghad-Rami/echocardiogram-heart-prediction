@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sns
 import cv2
@@ -14,19 +15,28 @@ print(df.describe())
 # plt.show()
 
 
-tracings = pd.read_csv(f'{base_path}/VolumeTracings.csv')
+# tracings = pd.read_csv(f'{base_path}/VolumeTracings.csv')
+#
+# filename = 'CR32a7555-CR32a7582-000039.avi'
+# frame_number = 39
+# tracings_for_frame = tracings[(tracings['FileName'] == filename) & (tracings['Frame'] == str(frame_number))]
+#
+# cap = cv2.VideoCapture(f'{base_path}/Videos/{filename}')
+# cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
+# ret, frame = cap.read()
+#
+# plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+# plt.scatter(tracings_for_frame['X'], tracings_for_frame['Y'], color='red', s=5)
+# plt.title(f'Frame {frame_number} Tracings')
+# plt.show()
+#
+# cap.release()
 
-filename = 'CR32a7555-CR32a7582-000039.avi'
-frame_number = 39
-tracings_for_frame = tracings[(tracings['FileName'] == filename) & (tracings['Frame'] == str(frame_number))]
+scaler = StandardScaler()
+numerical_features = ['Age', 'Weight', 'Height']
+df[numerical_features] = scaler.fit_transform(df[numerical_features])
 
-cap = cv2.VideoCapture(f'{base_path}/Videos/{filename}')
-cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
-ret, frame = cap.read()
+# Prepare combined feature set
+# Assuming `video_features` is obtained from video processing
+combined_features = df[numerical_features].values  # Add video features to this array
 
-plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-plt.scatter(tracings_for_frame['X'], tracings_for_frame['Y'], color='red', s=5)
-plt.title(f'Frame {frame_number} Tracings')
-plt.show()
-
-cap.release()
