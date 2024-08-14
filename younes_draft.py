@@ -40,6 +40,11 @@ volume_features.columns = ['_'.join(col).strip() for col in volume_features.colu
 
 data = pd.merge(metadata, volume_features, left_on='FileName', right_on='FileName_', how='inner')
 
+data = data.sample(frac=0.001, random_state=42).reset_index(drop=True)
+
+print(data.describe())
+print(len(data))
+
 base_model = VGG16(weights='imagenet', include_top=False, input_shape=frame_shape)
 feature_extractor = Model(inputs=base_model.input, outputs=base_model.output)
 
@@ -57,7 +62,7 @@ def extract_video_features(video_path, interval=1):
             frame = np.expand_dims(frame, axis=0)
             frame = tf.keras.applications.vgg16.preprocess_input(frame)
             features = feature_extractor.predict(frame)
-            frame_features.append(features)
+            frame_features.append(features[0])
         count += 1
     cap.release()
     while len(frame_features) < sequence_length:
@@ -77,6 +82,7 @@ for index, row in tqdm(data.iterrows(), total=data.shape[0]):
         continue
 
     video_feat = extract_video_features(video_path)
+    print(video_feat)
     video_features.append(video_feat)
     ef_values.append(row['EF'])
 
@@ -86,7 +92,15 @@ ef_values = np.array(ef_values)
 demographic_features = data[numerical_features + list(volume_features.columns[1:])].values
 combined_features = [video_features, demographic_features]
 
-X_train, X_val, y_train, y_val = train_test_split(combined_features, ef_values, test_size=0.2, random_state=42)
+print(len(video_features), len(demographic_features))
+
+X_video_train, X_video_val, X_demo_train, X_demo_val, y_train, y_val = train_test_split(
+    video_features, demographic_features, ef_values, test_size=0.2, random_state=42
+)
+
+# After splitting, combined_features for training and validation
+X_train = [X_video_train, X_demo_train]
+X_val = [X_video_val, X_demo_val]
 
 video_input = Input(shape=(sequence_length, 7, 7, 512))
 flattened_features = TimeDistributed(Flatten())(video_input)
@@ -103,9 +117,9 @@ combined = Dense(64, activation='relu')(combined)
 output = Dense(1, activation='linear')(combined)
 
 model = Model(inputs=[video_input, demographic_input], outputs=output)
-model.compile(optimizer=Adam(lr=1e-4), loss='mean_squared_error', metrics=['mae'])
+model.compile(optimizer=Adam(learning_rate=1e-4), loss='mean_squared_error', metrics=['mae'])
 
-model.fit([X_train[0], X_train[1]], y_train, validation_data=([X_val[0], X_val[1]], y_val), epochs=10, batch_size=8)
+model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=10, batch_size=8)
 
 loss, mae = model.evaluate([X_val[0], X_val[1]], y_val)
 print(f'Validation Mean Absolute Error: {mae:.2f}')

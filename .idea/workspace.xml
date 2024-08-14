@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e38a34b-0b6f-48a9-a6d8-1da1c34ec0db" name="Changes" comment="Scaling numerical features">
+    <list default="true" id="9e38a34b-0b6f-48a9-a6d8-1da1c34ec0db" name="Changes" comment="using regression combined model">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/younes_draft.py" beforeDir="false" afterPath="$PROJECT_DIR$/younes_draft.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,6 +113,8 @@
       <workItem from="1723213345083" duration="1199000" />
       <workItem from="1723292450109" duration="1216000" />
       <workItem from="1723447918928" duration="262000" />
+      <workItem from="1723527103998" duration="6047000" />
+      <workItem from="1723609811643" duration="629000" />
     </task>
     <task id="LOCAL-00001" summary="updating gitignore and requirements">
       <option name="closed" value="true" />
@@ -153,7 +156,23 @@
       <option name="project" value="LOCAL" />
       <updated>1722804740090</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="extracting and moving logistic">
+      <option name="closed" value="true" />
+      <created>1723530093034</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1723530093034</updated>
+    </task>
+    <task id="LOCAL-00007" summary="using regression combined model">
+      <option name="closed" value="true" />
+      <created>1723530109884</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1723530109884</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,7 +184,9 @@
     <MESSAGE value="age distribution" />
     <MESSAGE value="Volume Tracing plotting" />
     <MESSAGE value="Scaling numerical features" />
-    <option name="LAST_COMMIT_MESSAGE" value="Scaling numerical features" />
+    <MESSAGE value="extracting and moving logistic" />
+    <MESSAGE value="using regression combined model" />
+    <option name="LAST_COMMIT_MESSAGE" value="using regression combined model" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
